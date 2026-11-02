@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 4 56 13v19c0 15-10 25-24 29C18 57 8 47 8 32V13z' fill='%230B7D6E'/%3E%3Cpath d='M32 50V30' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3Cpath d='M32 36c0-10-8-14-15-13 0 8 6 13 15 13z' fill='white'/%3E%3C/svg%3E">
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="MindShield is a study-focus website that blocks distractions, motivates you at the right moment and grows a tree for every focus session. All data stays on your device.">
+<title>MindShield</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout concept: a calm security console. Left-aligned editorial copy beside a live "focus console" card; section eyebrows are module names like a config file (focus.mode, garden, night.mode). */
+:root{
+  --bg:#EDF3F0; --surface:#FAFDFC; --surface-2:#E1ECE8; --ink:#0F2234; --muted:#4A6071; --line:#C5D5CF;
+  --accent:#0B7D6E; --accent-deep:#075E52; --accent-ink:#FFFFFF; --accent-soft:#D3EEE8;
+  --sun:#E3A008; --sun-soft:#FBE9C2; --danger:#C8423B;
+  --leaf:#3F9B55; --leaf2:#2C7A40; --bark:#7A5230; --soil:#8A6B4C; --wilt:#A58446; --wilt2:#8C6E34;
+  --term-bg:#0F2234; --term-ink:#BFE6DD; --term-dim:#7FA3A0; --term-ok:#6EE0C5; --term-bad:#FF9A8F;
+  --night:#0E1B33; --night-2:#16284A; --night-ink:#E7EEFB; --night-dim:#A9B9D8; --night-line:#2B4272;
+  --font-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --font-body:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0B1822; --surface:#122434; --surface-2:#183044; --ink:#E6F1EE; --muted:#9DB4BE; --line:#26424F;
+  --accent:#3FD3BC; --accent-deep:#7FE5D2; --accent-ink:#06231E; --accent-soft:#143A3C;
+  --sun:#F2B73A; --sun-soft:#3A3012; --danger:#F07A72;
+  --leaf:#5CC274; --leaf2:#3E9B55; --bark:#A67B50; --soil:#6E563F; --wilt:#B8975A; --wilt2:#9A7B43;
+  --term-bg:#071019; --term-ink:#BFE6DD; --term-dim:#6F9490;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0B1822; --surface:#122434; --surface-2:#183044; --ink:#E6F1EE; --muted:#9DB4BE; --line:#26424F;
+  --accent:#3FD3BC; --accent-deep:#7FE5D2; --accent-ink:#06231E; --accent-soft:#143A3C;
+  --sun:#F2B73A; --sun-soft:#3A3012; --danger:#F07A72;
+  --leaf:#5CC274; --leaf2:#3E9B55; --bark:#A67B50; --soil:#6E563F; --wilt:#B8975A; --wilt2:#9A7B43;
+  --term-bg:#071019; --term-ink:#BFE6DD; --term-dim:#6F9490;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:16px}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+img,svg{max-width:100%}
+a{color:var(--accent-deep)}
+h1,h2,h3{font-family:var(--font-display);margin:0;text-wrap:balance}
+p{margin:0 0 1em}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:12px;top:-60px;background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:8px;z-index:100;transition:top .15s}
+.skip:focus{top:12px}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.eyebrow{font:500 .78rem/1 var(--font-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;padding-block:18px}
+.brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font:800 1.3rem/1 var(--font-display);letter-spacing:-.01em}
+.brand svg{width:34px;height:34px}
+.top nav ul{display:flex;flex-wrap:wrap;gap:2px 20px;list-style:none;margin:0;padding:0}
+.top nav a{color:var(--muted);text-decoration:none;font-weight:500;padding:8px 0;display:inline-block}
+.top nav a:hover{color:var(--ink)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:44px;align-items:start;padding-block:24px 64px}
+h1{font-weight:800;font-size:clamp(2.6rem,6.4vw,4.8rem);line-height:1.01;letter-spacing:-.028em;margin:0 0 .4em}
+h1 em{font-style:normal;color:var(--accent)}
+.lede{font-size:1.15rem;color:var(--muted);max-width:33em}
+.hint{font-size:.95rem;color:var(--muted);margin-bottom:22px}
+.log{font:400 .82rem/1.75 var(--font-mono);background:var(--term-bg);color:var(--term-ink);border-radius:14px;padding:14px 16px;margin:0;list-style:none;overflow-x:auto}
+.log li{white-space:nowrap}
+.log .t{color:var(--term-dim)}
+.log .ok{color:var(--term-ok)}
+.log .bad{color:var(--term-bad)}
+.log-head{font:500 .72rem var(--font-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+
+/* console */
+.console{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 22px 44px -28px rgba(15,34,52,.45)}
+.c-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.c-head .eyebrow{margin:0}
+.pill{font:500 .74rem/1 var(--font-mono);padding:.45em .85em;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.pill[data-s="on"]{background:var(--accent-soft);color:var(--accent-deep);border-color:transparent}
+.pill[data-s="break"]{background:var(--sun-soft);color:var(--ink);border-color:transparent}
+.dial{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 26px;margin:6px 0 14px}
+.ring{position:relative;width:176px;height:176px;flex:none}
+.ring svg{width:100%;height:100%;display:block}
+.ring .trk{fill:none;stroke:var(--line);stroke-width:10}
+.ring .prg{fill:none;stroke:var(--accent);stroke-width:10;stroke-linecap:round;stroke-dasharray:553;stroke-dashoffset:553;transition:stroke-dashoffset .3s linear}
+.ring-in{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.time{font:500 2.35rem/1 var(--font-mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.sub{font-size:.85rem;color:var(--muted);margin-top:6px}
+.live-tree{width:132px;height:132px;flex:none}
+.live-tree svg{width:100%;height:100%;display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.chip{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:.45em 1.05em;font-weight:600;font-size:.95rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:disabled{opacity:.5;cursor:not-allowed}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:.8em 1.3em;font-weight:600;cursor:pointer;background:var(--accent);color:var(--accent-ink);text-decoration:none}
+.btn:hover{filter:brightness(1.06)}
+.btn.block{width:100%}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.sm{padding:.4em .85em;font-size:.88rem;border-radius:10px}
+.btn:disabled{opacity:.5;cursor:not-allowed;filter:none}
+.qline{font:600 1.02rem/1.4 var(--font-display);color:var(--ink);margin:14px 0 4px;min-height:2.8em}
+.rules-h{display:flex;justify-content:space-between;align-items:baseline;margin:16px 0 4px}
+.rules-h h3{font-size:1.02rem}
+.rules-h span{font:500 .74rem var(--font-mono);color:var(--muted)}
+.rule{display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:12px;padding:9px 0;border-top:1px solid var(--line)}
+.rule label{overflow-wrap:anywhere}
+.x{border:0;background:transparent;color:var(--muted);font-size:1.3rem;line-height:1;cursor:pointer;padding:4px 8px}
+.x:hover{color:var(--danger)}
+.add{display:flex;gap:8px;margin-top:10px}
+.add input{flex:1;min-width:0}
+input[type=text],input[type=time],input[type=password],textarea{background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:.55em .8em}
+input::placeholder,textarea::placeholder{color:var(--muted)}
+.sw{appearance:none;-webkit-appearance:none;width:42px;height:24px;border-radius:999px;background:var(--line);position:relative;cursor:pointer;margin:0;flex:none;transition:background .15s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:transform .15s}
+.sw:checked{background:var(--accent)}
+.sw:checked::after{transform:translateX(18px)}
+.sw:disabled{opacity:.5;cursor:not-allowed}
+.lock-note{font-size:.85rem;color:var(--muted);margin:8px 0 0}
+
+/* sections */
+section{padding-block:60px}
+.sec-head{max-width:44rem;margin-bottom:30px}
+h2{font-weight:800;font-size:clamp(1.9rem,4.2vw,2.9rem);line-height:1.06;letter-spacing:-.02em;margin-bottom:.45em}
+.sec-head p{color:var(--muted);font-size:1.08rem}
+.alt{background:var(--surface-2)}
+
+/* garden */
+.garden{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:28px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px}
+.alt .panel{background:var(--bg)}
+.big-tree{width:100%;max-width:240px;margin:0 auto;display:block}
+.lvl-name{font:800 1.7rem/1.1 var(--font-display);text-align:center;margin:6px 0 2px}
+.lvl-next{text-align:center;color:var(--muted);font-size:.95rem;margin-bottom:14px}
+.meter{height:8px;border-radius:99px;background:var(--line);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.stats{display:flex;flex-wrap:wrap;gap:6px 26px;margin:18px 0 0;padding:14px 0 0;border-top:1px solid var(--line);list-style:none}
+.stats li{font:500 .8rem var(--font-mono);color:var(--muted)}
+.stats b{display:block;font:800 1.5rem/1.1 var(--font-display);color:var(--ink);letter-spacing:-.01em}
+.ladder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 22px;padding:0;list-style:none}
+.ladder li{border:1.5px solid var(--line);border-radius:14px;padding:8px 6px 10px;text-align:center;font-size:.85rem;color:var(--muted)}
+.ladder li svg{width:56px;height:56px;display:block;margin:0 auto 2px}
+.ladder li[aria-current="step"]{border-color:var(--accent);color:var(--ink);background:var(--accent-soft);font-weight:600}
+.ladder small{display:block;font:500 .68rem var(--font-mono);color:var(--muted)}
+.plots-h{display:flex;justify-content:space-between;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:10px}
+.plots-h h3{font-size:1.05rem}
+.plots{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px;list-style:none;margin:0 0 6px;padding:0}
+.plots li{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:2px}
+.alt .plots li{background:var(--surface)}
+.plots svg{width:100%;height:auto;display:block}
+.empty{color:var(--muted);font-size:.95rem}
+.note{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;background:var(--sun-soft);border-radius:12px;padding:10px 14px;font-size:.92rem;margin:0 0 16px}
+.bars{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;align-items:end;height:150px;margin-top:6px}
+.col{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:5px;height:100%}
+.col .v{font:500 .72rem var(--font-mono);color:var(--muted)}
+.col .b{width:100%;max-width:40px;background:var(--accent);border-radius:7px 7px 2px 2px;min-height:3px}
+.col.today .b{background:var(--sun)}
+.days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;text-align:center;font:500 .74rem var(--font-mono);color:var(--muted);margin-top:6px}
+.chart-sum{font-size:.92rem;color:var(--muted);margin:10px 0 0}
+
+/* night */
+.night{background:var(--night);color:var(--night-ink)}
+.night .eyebrow,.night .sec-head p{color:var(--night-dim)}
+.night-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:30px;align-items:center}
+.night .panel{background:var(--night-2);border-color:var(--night-line)}
+.night .rule{border-top-color:var(--night-line)}
+.night input[type=time]{background:var(--night);border-color:var(--night-line);color:var(--night-ink);color-scheme:dark}
+.night .btn.ghost{color:var(--night-ink);border-color:var(--night-line)}
+.night .sw{background:var(--night-line)}
+.night .sw:checked{background:#3FD3BC}
+.night .lock-note,.night .status{color:var(--night-dim)}
+.night .moon{width:100%;max-width:300px;display:block;margin:0 auto}
+.row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;flex-wrap:wrap}
+.row+.row{border-top:1px solid var(--night-line)}
+.status{font:500 .84rem/1.5 var(--font-mono);margin:12px 0 0}
+
+/* privacy */
+.priv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:start}
+.pillars{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.pillars li{padding:16px 0;border-top:1px solid var(--line)}
+.pillars li:first-child{border-top:0;padding-top:0}
+.pillars h3{font-size:1.18rem;margin-bottom:4px}
+.pillars p{margin:0;color:var(--muted)}
+.audit-h{font-size:1.1rem;margin-bottom:4px}
+.audit{font:400 .86rem/1.6 var(--font-mono);margin:14px 0;padding:0;list-style:none}
+.audit li{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-top:1px dashed var(--line)}
+.audit li span:first-child{color:var(--muted)}
+.audit li span:last-child{text-align:right;overflow-wrap:anywhere}
+details{margin:12px 0}
+summary{cursor:pointer;font-weight:600}
+pre.raw{font:400 .78rem/1.5 var(--font-mono);background:var(--term-bg);color:var(--term-ink);border-radius:12px;padding:12px;max-height:220px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.pin-form{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.pin-form input{width:8.5em}
+.sep{border:0;border-top:1px solid var(--line);margin:18px 0}
+
+/* wellbeing + quotes + roadmap + team */
+.tricks{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 28px;list-style:none;margin:0;padding:0}
+.tricks li{border-top:2px solid var(--ink);padding-top:14px}
+.tricks h3{font-size:1.15rem;margin-bottom:6px}
+.tricks p{color:var(--muted);font-size:.97rem;margin-bottom:.7em}
+.tricks .try{font:500 .82rem/1.5 var(--font-mono);color:var(--accent-deep)}
+.quote-box{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2fr);gap:28px;align-items:start}
+.q-tabs{display:flex;flex-wrap:wrap;gap:8px}
+.q-text{font:800 clamp(1.5rem,3.4vw,2.4rem)/1.18 var(--font-display);letter-spacing:-.015em;margin:0 0 16px;min-height:3.6em;text-wrap:balance}
+.road{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.road h3{font-size:1.2rem;margin-bottom:10px}
+.road ul{margin:0;padding-left:1.1em;color:var(--muted)}
+.road li{margin-bottom:.5em}
+.road .tag{font:500 .72rem var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent-deep);display:block;margin-bottom:6px}
+.team{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;list-style:none;margin:0 0 36px;padding:0}
+.team li{border-top:2px solid var(--ink);padding-top:12px}
+.team .id{font:500 .8rem var(--font-mono);color:var(--muted);display:block;margin-bottom:4px;overflow-wrap:anywhere}
+.team .nm{font:800 1.3rem/1.2 var(--font-display)}
+.impact{display:flex;flex-wrap:wrap;gap:10px;list-style:none;margin:0;padding:0}
+.impact li{border:1.5px solid var(--line);border-radius:999px;padding:.4em 1em;font-size:.95rem}
+footer{padding-block:36px 56px;border-top:1px solid var(--line);color:var(--muted);font-size:.92rem}
+
+/* overlays */
+.ov{position:fixed;inset:0;display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));overflow:auto}
+#popup{z-index:70;background:rgba(8,20,30,.82)}
+#dlg{z-index:80;background:rgba(8,20,30,.7)}
+#nov{z-index:60;background:var(--night);color:var(--night-ink);text-align:center}
+.card{background:var(--surface);color:var(--ink);border-radius:22px;padding:26px;width:100%;max-width:440px;box-shadow:0 30px 70px -20px rgba(0,0,0,.55)}
+.card h2{font-size:1.7rem;margin-bottom:.3em}
+.who{color:var(--muted);margin-bottom:.6em}
+.p-quote{font:700 1.2rem/1.3 var(--font-display);margin:10px 0 16px}
+.breath{display:grid;place-items:center;margin:6px 0 14px}
+.breath .orb{width:96px;height:96px;border-radius:50%;background:var(--accent-soft);border:3px solid var(--accent);display:grid;place-items:center;animation:breathe 8s ease-in-out infinite}
+.breath .orb b{font:500 1.7rem var(--font-mono);font-variant-numeric:tabular-nums}
+.breath small{color:var(--muted);margin-top:8px;font-size:.9rem}
+@keyframes breathe{0%,100%{transform:scale(.82)}50%{transform:scale(1.12)}}
+.stack{display:grid;gap:10px}
+.reason{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.reason textarea{width:100%;min-height:68px;resize:vertical;margin:8px 0}
+.err{color:var(--danger);font-size:.92rem;min-height:1.4em;margin:6px 0 0}
+#nov .inner{max-width:480px}
+#nov .moon{width:150px;height:150px;margin:0 auto 10px;display:block}
+#nov h2{font-size:clamp(2.2rem,8vw,3.4rem)}
+#nov .clock{font:500 1.5rem var(--font-mono);color:#F2B73A;margin:4px 0 14px}
+#nov p{color:var(--night-dim)}
+#nov .btn.ghost{color:var(--night-ink);border-color:var(--night-line)}
+html.lock{overflow:hidden}
+.toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--bg);padding:.8em 1.2em;border-radius:12px;max-width:min(92vw,460px);opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:90;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:980px){
+  .hero,.garden,.night-grid,.priv,.quote-box{grid-template-columns:minmax(0,1fr)}
+  .tricks{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 28px}
+  .night .moon{max-width:200px}
+}
+@media (max-width:620px){
+  .road,.team{grid-template-columns:minmax(0,1fr)}
+  .tricks{grid-template-columns:minmax(0,1fr)}
+  .console{padding:16px}
+  .rule{grid-template-columns:auto minmax(0,1fr) auto}
+  .rule .x{display:none}
+  .rule.custom .x{display:block;grid-column:3}
+  .rule.custom .btn{grid-column:2}
+  section{padding-block:44px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="logo" viewBox="0 0 64 64">
+    <path d="M32 4 L56 13 V32 C56 47 46 57 32 61 C18 57 8 47 8 32 V13 Z" fill="var(--accent)"/>
+    <path d="M32 50 V30" stroke="var(--accent-ink)" stroke-width="4" stroke-linecap="round" fill="none"/>
+    <path d="M32 36 C32 26 24 22 17 23 C17 31 23 36 32 36 Z" fill="var(--accent-ink)"/>
+    <path d="M32 30 C32 21 39 17 46 18 C46 26 40 30 32 30 Z" fill="var(--accent-ink)" opacity=".8"/>
+  </symbol>
+</svg>
+
+<a class="skip" href="#focus">Skip to the focus console</a>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#top" id="top"><svg aria-hidden="true"><use href="#logo"/></svg>MindShield</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#focus">Focus</a></li>
+        <li><a href="#garden">Garden</a></li>
+        <li><a href="#night">Night</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#team">Team</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero" id="focus">
+      <div>
+        <p class="eyebrow">Study focus for exam season</p>
+        <h1>A firewall for <em>your attention.</em></h1>
+        <p class="lede">MindShield blocks distractions during study time, shows the right words when you reach for your phone, and grows a tree for every session you finish. Everything stays on your device.</p>
+        <p class="hint">Try it now. Pick a length and press Start. The 1 minute option shows a full session from start to finish.</p>
+        <p class="log-head">Firewall log</p>
+        <ul class="log" id="log" aria-label="Recent firewall events"></ul>
+      </div>
+
+      <div class="console" id="console">
+        <div class="c-head"><p class="eyebrow">focus.mode</p><span class="pill" id="pill" data-s="idle">Idle</span></div>
+        <div class="dial">
+          <div class="ring">
+            <svg viewBox="0 0 200 200" aria-hidden="true"><circle class="trk" cx="100" cy="100" r="88"/><circle class="prg" id="prg" cx="100" cy="100" r="88" transform="rotate(-90 100 100)"/></svg>
+            <div class="ring-in"><div class="time" id="time" role="timer">25:00</div><div class="sub" id="timeSub">ready</div></div>
+          </div>
+          <div class="live-tree" id="liveTree"></div>
+        </div>
+        <div class="chips" role="group" aria-label="Session length" id="durs">
+          <button type="button" class="chip" data-m="1">1 min demo</button>
+          <button type="button" class="chip" data-m="25">25 min</button>
+          <button type="button" class="chip" data-m="45">45 min</button>
+          <button type="button" class="chip" data-m="60">60 min</button>
+        </div>
+        <button type="button" class="btn block" id="startBtn">Start focus session</button>
+        <button type="button" class="btn ghost block" id="endBtn" hidden>End session early</button>
+        <p class="qline" id="qline" aria-live="polite"></p>
+
+        <div class="rules-h"><h3>Blocked apps</h3><span id="ruleCount"></span></div>
+        <div id="rules"></div>
+        <form class="add" id="addRule" autocomplete="off">
+          <label class="sr" for="newRule">Add an app to block</label>
+          <input type="text" id="newRule" maxlength="20" placeholder="Add another app">
+          <button class="btn ghost sm" type="submit">Add</button>
+        </form>
+        <p class="lock-note" id="lockNote" hidden>Settings are locked while a session runs. End the session to change them.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<section class="alt" id="garden">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">garden</p>
+      <h2>Study Garden</h2>
+      <p>Every focus session plants a tree. Finish the session and it grows. Give in to a distraction and it wilts. Keep going and the garden becomes a forest.</p>
+    </div>
+    <div class="note" id="sampleNote" hidden><span>Example data is shown so you can see how the garden fills. Your first real session replaces it.</span><button type="button" class="btn ghost sm" id="clearSample">Clear examples now</button></div>
+    <div class="garden">
+      <div class="panel">
+        <div id="bigTree"></div>
+        <p class="lvl-name" id="lvlName"></p>
+        <p class="lvl-next" id="lvlNext"></p>
+        <div class="meter" aria-hidden="true"><i id="lvlBar" style="width:0%"></i></div>
+        <ul class="stats" id="stats"></ul>
+      </div>
+      <div class="panel">
+        <ol class="ladder" id="ladder" aria-label="Levels"></ol>
+        <div class="plots-h"><h3>Your garden</h3><span class="empty" id="plotsSub"></span></div>
+        <ul class="plots" id="plots"></ul>
+        <hr class="sep">
+        <div class="plots-h"><h3>Focus minutes, last 7 days</h3></div>
+        <div id="chart"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="night" id="night">
+  <div class="wrap">
+    <div class="night-grid">
+      <div>
+        <div class="sec-head" style="margin-bottom:20px">
+          <p class="eyebrow">night.mode</p>
+          <h2>Night Mode</h2>
+          <p>Sleep matters for memory and mood. At bedtime MindShield shows a rest screen and will not start a focus session until 5:00 in the morning.</p>
+        </div>
+        <div class="panel">
+          <div class="row"><label for="nightOn">Turn on Night Mode</label><input class="sw" type="checkbox" id="nightOn"></div>
+          <div class="row"><label for="bedtime">Bedtime</label><input type="time" id="bedtime" value="23:00"></div>
+          <div class="row"><span>See what it looks like</span><button type="button" class="btn ghost sm" id="nightPreview">Preview rest screen</button></div>
+          <p class="status" id="nightStatus"></p>
+        </div>
+      </div>
+      <svg class="moon" viewBox="0 0 300 300" role="img" aria-label="A crescent moon and stars over a sleeping phone">
+        <circle cx="150" cy="150" r="140" fill="#16284A"/>
+        <circle cx="120" cy="120" r="70" fill="#FFE8A3"/><circle cx="150" cy="100" r="64" fill="#16284A"/>
+        <circle cx="220" cy="70" r="3" fill="#E7EEFB"/><circle cx="250" cy="130" r="2" fill="#E7EEFB"/><circle cx="60" cy="210" r="2.5" fill="#E7EEFB"/><circle cx="200" cy="40" r="2" fill="#F2B73A"/><circle cx="90" cy="60" r="2" fill="#E7EEFB"/>
+        <rect x="112" y="150" width="76" height="128" rx="14" fill="#3FD3BC"/><rect x="118" y="160" width="64" height="108" rx="8" fill="#0E1B33"/>
+        <text x="150" y="208" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="15" fill="#F2B73A">23:00</text>
+        <text x="150" y="232" text-anchor="middle" font-family="Figtree, sans-serif" font-size="10" fill="#E7EEFB">Time to sleep</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="privacy">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">privacy.audit</p>
+      <h2>Built like a security tool</h2>
+      <p>A focus app sees what you do on your phone, so the first rule is to keep that data with you.</p>
+    </div>
+    <div class="priv">
+      <ul class="pillars">
+        <li><h3>Privacy first</h3><p>All usage data stays on this device. There is no account, no analytics and nothing is uploaded or sold.</p></li>
+        <li><h3>Minimal permissions</h3><p>This website asks for none. The Android app will ask only for what blocking needs and explain each one before you agree.</p></li>
+        <li><h3>Tamper protection</h3><p>A PIN is needed to end a session early, turn off Night Mode or change the bedtime, so a weak moment cannot undo your plan. Three wrong tries lock the PIN for 30 seconds.</p></li>
+        <li><h3>Digital wellbeing awareness</h3><p>Short tips below explain how apps are designed to hook you, so you can spot the trick.</p></li>
+      </ul>
+      <div class="panel">
+        <h3 class="audit-h">What MindShield stores in this browser</h3>
+        <p class="empty" style="margin:0">Live view. This is everything the site knows about you.</p>
+        <ul class="audit" id="audit"></ul>
+        <details><summary>Show the raw stored data</summary><pre class="raw" id="raw" tabindex="0"></pre></details>
+        <div class="btns"><button type="button" class="btn danger sm" id="eraseBtn">Erase everything</button></div>
+        <hr class="sep">
+        <h3 class="audit-h">Tamper protection PIN</h3>
+        <p class="empty" id="pinState" style="margin:0"></p>
+        <form class="pin-form" id="pinForm" autocomplete="off">
+          <label class="sr" for="pinNew">New 4 digit PIN</label>
+          <input type="password" id="pinNew" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="4 digits">
+          <button class="btn sm" type="submit">Set PIN</button>
+        </form>
+        <div class="btns" id="pinRemoveWrap" hidden><button type="button" class="btn ghost sm" id="pinRemove">Remove PIN</button></div>
+        <p class="err" id="pinErr" role="alert"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="tricks">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">threat.model</p>
+      <h2>How apps are built to hook you</h2>
+      <p>Know the trick and it loses some of its pull.</p>
+    </div>
+    <ul class="tricks">
+      <li><h3>Infinite scroll</h3><p>A feed with no bottom has no natural moment to stop. Your brain never gets the cue that it is finished.</p><p class="try">Counter: decide your stopping point before you open the app.</p></li>
+      <li><h3>Notification tricks</h3><p>Red badges and pings are designed to feel urgent. Almost none of them are.</p><p class="try">Counter: mute everything for the next 25 minutes.</p></li>
+      <li><h3>Pull to refresh</h3><p>Sometimes nothing new appears, sometimes something great does. That uncertainty works like a slot machine.</p><p class="try">Counter: check at set times, not on impulse.</p></li>
+      <li><h3>Autoplay</h3><p>The next video starts before you decide anything. If you do not choose, the app chooses for you.</p><p class="try">Counter: turn autoplay off in settings.</p></li>
+    </ul>
+  </div>
+</section>
+
+<section id="quotes">
+  <div class="wrap">
+    <div class="quote-box">
+      <div>
+        <p class="eyebrow">quotes</p>
+        <h2>The right words at the right moment</h2>
+        <p style="color:var(--muted)">MindShield picks a message to match what you are feeling. Choose a moment.</p>
+        <div class="q-tabs" id="qTabs" role="group" aria-label="Moment"></div>
+      </div>
+      <div>
+        <p class="q-text" id="qText" aria-live="polite"></p>
+        <button type="button" class="btn ghost sm" id="qNext">Another one</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="roadmap">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">scope</p>
+      <h2>What the website does, and what comes next</h2>
+      <p>A website cannot block other apps on your phone. It can watch its own tab, and that is enough to build the habit and show the full idea.</p>
+    </div>
+    <div class="road">
+      <div class="panel">
+        <span class="tag">Working today</span>
+        <h3>This website</h3>
+        <ul>
+          <li>Focus timer with 1, 25, 45 and 60 minute sessions.</li>
+          <li>A popup with a breathing pause when you leave the tab during a session.</li>
+          <li>Your list of blocked apps, ready to preview the popup for each one.</li>
+          <li>Study Garden with streaks, levels and a weekly chart.</li>
+          <li>Night Mode rest screen and a PIN against tampering.</li>
+        </ul>
+      </div>
+      <div class="panel">
+        <span class="tag">Planned</span>
+        <h3>Android app</h3>
+        <ul>
+          <li>Block the real apps you chose, using Usage Access and a screen overlay.</li>
+          <li>Show the same popup on top of Instagram, YouTube and games.</li>
+          <li>Night Mode that locks distracting apps at bedtime.</li>
+          <li>Screen time saved, measured on the device.</li>
+          <li>Same promise: data never leaves the phone.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="eyebrow">team</p>
+      <h2>Team MindShield</h2>
+      <p>Built for Mastery of Mind (MAOM) in the Cybersecurity branch. Our goal is to help students manage the stress of everyday life and exam season.</p>
+    </div>
+    <ul class="team">
+      <li><span class="id">cb.sc.u4cys26166</span><span class="nm">Visva Thomas Cristober</span></li>
+      <li><span class="id">cb.sc.u4cys26153</span><span class="nm">Sanjay Kaarthikeyan Bharath Kumar</span></li>
+      <li><span class="id">cb.sc.u4cys26170</span><span class="nm">Shreehari Manoj Kumar</span></li>
+    </ul>
+    <p class="eyebrow">Expected impact</p>
+    <ul class="impact">
+      <li>Less time wasted on distracting apps</li>
+      <li>Better focus and exam preparation</li>
+      <li>Lower stress and guilt</li>
+      <li>Healthier sleep and screen habits</li>
+      <li>A tool students can trust</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">MindShield, a project for Mastery of Mind. Everything runs in your browser. The only outside request this site makes is for fonts.</div>
+</footer>
+
+<!-- popup shown when a blocked app is opened or the study tab is left -->
+<div class="ov" id="popup" role="dialog" aria-modal="true" aria-labelledby="pTitle" hidden>
+  <div class="card">
+    <p class="eyebrow" id="pTag">Focus mode is on</p>
+    <h2 id="pTitle">Pause before you scroll</h2>
+    <p class="who" id="pWho"></p>
+    <p class="p-quote" id="pQuote"></p>
+    <div class="breath"><div class="orb"><b id="pCount">10</b></div><small id="pBreath">Breathe in</small></div>
+    <div class="stack">
+      <button type="button" class="btn block" id="pBack">Back to study</button>
+      <button type="button" class="btn ghost block" id="pOver" disabled>I really need this</button>
+    </div>
+    <div class="reason" id="pReason" hidden>
+      <label for="pWhy"><b>Why do you need it?</b> You get 5 minutes and your tree will wilt.</label>
+      <textarea id="pWhy" maxlength="120" placeholder="For example: my friend asked about tomorrow's exam"></textarea>
+      <button type="button" class="btn danger block" id="pAllow" disabled>Allow 5 minutes</button>
+    </div>
+  </div>
+</div>
+
+<!-- confirm / PIN dialog -->
+<div class="ov" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dlgT" hidden>
+  <form class="card" id="dlgForm" autocomplete="off">
+    <h2 id="dlgT"></h2>
+    <p id="dlgB" class="who"></p>
+    <div id="dlgPinRow" hidden>
+      <label class="sr" for="dlgPin">PIN</label>
+      <input type="password" id="dlgPin" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="4 digit PIN" style="width:100%">
+    </div>
+    <p class="err" id="dlgErr" role="alert"></p>
+    <div class="stack" style="margin-top:10px"><button class="btn" id="dlgOk" type="submit">Confirm</button><button class="btn ghost" id="dlgNo" type="button">Cancel</button></div>
+  </form>
+</div>
+
+<!-- night rest screen -->
+<div class="ov" id="nov" role="dialog" aria-modal="true" aria-labelledby="nTitle" hidden>
+  <div class="inner">
+    <svg class="moon" viewBox="0 0 150 150" aria-hidden="true"><circle cx="64" cy="70" r="46" fill="#FFE8A3"/><circle cx="84" cy="56" r="42" fill="#0E1B33"/><circle cx="118" cy="30" r="3" fill="#E7EEFB"/><circle cx="130" cy="84" r="2" fill="#F2B73A"/><circle cx="30" cy="22" r="2" fill="#E7EEFB"/></svg>
+    <h2 id="nTitle">Time to sleep</h2>
+    <p class="clock" id="nClock"></p>
+    <p id="nQuote"></p>
+    <p id="nSub"></p>
+    <div class="stack" style="margin-top:18px">
+      <button type="button" class="btn ghost" id="nSnooze">Snooze for 15 minutes</button>
+      <button type="button" class="btn ghost" id="nClose" hidden>Close preview</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<noscript><div class="wrap"><p>MindShield needs JavaScript to run the focus timer and garden.</p></div></noscript>
+
+<script>
+(function(){
+'use strict';
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var pad=function(n){return n<10?'0'+n:''+n};
+var KEY='mindshield.v1', DAY=86400000;
+
+var QUOTES={
+  start:["Small steps every day beat big plans someday.","You don't have to be perfect, just start.","Focus for 25 minutes. The rest can wait."],
+  popup:["Your future self is watching. Make them proud.","One reel becomes thirty minutes. Is it worth it?","Close the app. Open the chapter.","Distraction is easy. Success is worth the effort."],
+  tired:["Tired is temporary. Regret is longer.","Progress, not perfection.","Every page you finish is a win.","Rest if you must, but don't quit."],
+  stress:["Breathe in. Breathe out. You've handled hard days before.","An exam is a chapter of your life, not the whole book.","You are more than your marks.","Take it one question at a time."],
+  done:["Great job! Your tree just grew.","You beat the scroll today. That's real discipline.","Another day on your streak. Keep it going tomorrow."],
+  night:["A rested mind remembers more. Sleep is part of studying.","Close the books. Tomorrow's you will thank you.","Sleep is when your memory saves today's work."]
+};
+var QTABS=[['start','Starting'],['popup','Reaching for the phone'],['tired','Tired'],['stress','Stressed'],['done','Finished'],['night','Late night']];
+var pick=function(a,not){var r,i=0;do{r=a[Math.floor(Math.random()*a.length)];i++}while(r===not&&a.length>1&&i<10);return r};
+
+var DEFAULT_RULES=[['instagram','Instagram'],['youtube','YouTube'],['games','Games'],['whatsapp','WhatsApp'],['x','X (Twitter)'],['snapchat','Snapchat']].map(function(r,i){return {id:r[0],name:r[1],on:i<4}});
+var LEVELS=[{n:'Seed',min:0,p:0.04},{n:'Sprout',min:1,p:0.3},{n:'Tree',min:5,p:0.72},{n:'Forest Guardian',min:15,p:1}];
+
+/* ---------- state ---------- */
+var storageOK=true;
+function fresh(withSample){
+  var d=function(n,h,m){var x=new Date();x.setDate(x.getDate()-n);x.setHours(h,m||0,0,0);return x.getTime()};
+  var s={v:1,sample:!!withSample,sessions:[],attempts:[],
+    settings:{duration:25,rules:DEFAULT_RULES.map(function(r){return {id:r.id,name:r.name,on:r.on}}),night:true,bedtime:'23:00',pin:null},
+    active:null,snoozeUntil:0,log:[]};
+  if(withSample){
+    s.sessions=[
+      {id:'x1',ts:d(3,18,30),minutes:45,done:45,status:'grown',sample:true},
+      {id:'x2',ts:d(2,18,30),minutes:25,done:25,status:'grown',sample:true},
+      {id:'x3',ts:d(1,16,40),minutes:25,done:11,status:'wilted',sample:true},
+      {id:'x4',ts:d(1,18,30),minutes:25,done:25,status:'grown',sample:true}];
+    s.attempts=[
+      {ts:d(2,18,40),app:'Instagram',outcome:'back',sample:true},
+      {ts:d(1,16,50),app:'YouTube',outcome:'override',reason:'Looked up a lecture video',sample:true},
+      {ts:d(1,18,50),app:'Instagram',outcome:'back',sample:true}];
+  }
+  return s;
+}
+function load(){
+  try{
+    var r=localStorage.getItem(KEY);
+    if(r){var s=JSON.parse(r);
+      if(s&&s.v===1&&Array.isArray(s.sessions)&&Array.isArray(s.attempts)&&s.settings&&Array.isArray(s.settings.rules)){s.log=Array.isArray(s.log)?s.log:[];return s}}
+  }catch(e){storageOK=false}
+  return fresh(true);
+}
+var state=load();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){storageOK=false}}
+function log(msg,cls){state.log.push({ts:Date.now(),msg:msg,cls:cls||''});if(state.log.length>40)state.log=state.log.slice(-40);renderLog()}
+
+/* ---------- helpers ---------- */
+var dk=function(d){return d.getFullYear()+'-'+d.getMonth()+'-'+d.getDate()};
+var mmss=function(ms){ms=Math.max(0,Math.ceil(ms/1000));return pad(Math.floor(ms/60))+':'+pad(ms%60)};
+var hms=function(ts){var d=new Date(ts);return pad(d.getHours())+':'+pad(d.getMinutes())+':'+pad(d.getSeconds())};
+function toast(msg){var t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove('show')},4200)}
+function grownCount(){return state.sessions.filter(function(s){return s.status==='grown'}).length}
+function levelIdx(){var g=grownCount(),i=0;LEVELS.forEach(function(l,k){if(g>=l.min)i=k});return i}
+function streak(){
+  var days={};state.sessions.forEach(function(s){if(s.status==='grown')days[dk(new Date(s.ts))]=1});
+  var d=new Date();if(!days[dk(d)])d.setDate(d.getDate()-1);
+  var n=0;while(days[dk(d)]){n++;d.setDate(d.getDate()-1)}return n;
+}
+
+/* ---------- tree drawing ---------- */
+function treeSVG(p,wilted,crown,label){
+  p=Math.max(0,Math.min(1,p));
+  var gy=172,cx=100,tH=6+84*p,tW=4+10*p,top=gy-tH,r=(wilted?0.82:1)*(5+46*p);
+  var c1=wilted?'var(--wilt)':'var(--leaf)',c2=wilted?'var(--wilt2)':'var(--leaf2)';
+  var s='<svg viewBox="0 0 200 200" role="img" aria-label="'+esc(label||'Tree')+'">';
+  s+='<ellipse cx="100" cy="'+(gy+3)+'" rx="62" ry="9" fill="var(--soil)" opacity=".85"/>';
+  if(p<0.1){
+    s+='<ellipse cx="100" cy="'+(gy-2)+'" rx="10" ry="13" fill="#C9A66B"/>';
+    s+='<path d="M100 '+(gy-12)+' V'+(gy-26)+'" stroke="'+c2+'" stroke-width="3" stroke-linecap="round" fill="none"/>';
+  }else{
+    s+='<rect x="'+(cx-tW/2)+'" y="'+top+'" width="'+tW+'" height="'+tH+'" rx="'+(tW/2)+'" fill="var(--bark)"/>';
+    if(p<0.45){
+      var lr=10+36*p/0.45*0.6;
+      s+='<ellipse cx="'+(cx-lr*0.9)+'" cy="'+(top+4)+'" rx="'+lr+'" ry="'+(lr*0.55)+'" fill="'+c1+'" transform="rotate('+(wilted?28:-22)+' '+(cx-lr*0.9)+' '+(top+4)+')"/>';
+      s+='<ellipse cx="'+(cx+lr*0.9)+'" cy="'+(top-2)+'" rx="'+lr+'" ry="'+(lr*0.55)+'" fill="'+c2+'" transform="rotate('+(wilted?-28:22)+' '+(cx+lr*0.9)+' '+(top-2)+')"/>';
+    }else{
+      var dy=wilted?r*0.25:0;
+      s+='<circle cx="'+cx+'" cy="'+(top-r*0.1+dy)+'" r="'+r+'" fill="'+c2+'"/>';
+      s+='<circle cx="'+(cx-r*0.72)+'" cy="'+(top+r*0.42+dy)+'" r="'+(r*0.68)+'" fill="'+c1+'"/>';
+      s+='<circle cx="'+(cx+r*0.72)+'" cy="'+(top+r*0.38+dy)+'" r="'+(r*0.7)+'" fill="'+c1+'"/>';
+    }
+  }
+  if(wilted&&p>=0.1){
+    s+='<ellipse cx="70" cy="'+(gy+4)+'" rx="7" ry="3.5" fill="'+c1+'" transform="rotate(-18 70 '+(gy+4)+')"/><ellipse cx="132" cy="'+(gy+6)+'" rx="7" ry="3.5" fill="'+c2+'" transform="rotate(14 132 '+(gy+6)+')"/><ellipse cx="108" cy="'+(gy+8)+'" rx="6" ry="3" fill="'+c1+'"/>';
+  }
+  if(crown){var sy=top-r-12;s+='<path d="M100 '+(sy-12)+' L104 '+(sy-2)+' L115 '+(sy-1)+' L106.5 '+(sy+6)+' L109.5 '+(sy+17)+' L100 '+(sy+11)+' L90.5 '+(sy+17)+' L93.5 '+(sy+6)+' L85 '+(sy-1)+' L96 '+(sy-2)+' Z" fill="var(--sun)"/>'}
+  return s+'</svg>';
+}
+
+/* ---------- overlays ---------- */
+var focusBefore=null;
+function openOv(el){if(!el.hidden)return;if(!$$('.ov:not([hidden])').length)focusBefore=document.activeElement;el.hidden=false;document.documentElement.classList.add('lock')}
+function closeOv(el){el.hidden=true;if(!$$('.ov:not([hidden])').length){document.documentElement.classList.remove('lock');if(focusBefore&&focusBefore.focus&&document.contains(focusBefore)){try{focusBefore.focus()}catch(e){}}}}
+
+/* ---------- PIN + confirm dialog ---------- */
+var pinFails=0,lockUntil=0;
+function rnd(){try{var a=new Uint8Array(8);crypto.getRandomValues(a);return Array.prototype.map.call(a,function(b){return pad(b.toString(16))}).join('')}catch(e){return String(Math.random()).slice(2)}}
+function hashPin(pin,salt){
+  var s=salt+':'+pin;
+  if(window.crypto&&crypto.subtle&&window.TextEncoder){
+    return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)).then(function(buf){return Array.prototype.map.call(new Uint8Array(buf),function(b){return pad(b.toString(16))}).join('')});
+  }
+  var h=5381;for(var i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;
+  return Promise.resolve('x'+h);
+}
+var hasPin=function(){return !!(state.settings.pin&&state.settings.pin.hash)};
+function verifyPin(pin){
+  if(Date.now()<lockUntil)return Promise.resolve({ok:false,locked:true});
+  return hashPin(pin,state.settings.pin.salt).then(function(h){
+    if(h===state.settings.pin.hash){pinFails=0;return {ok:true}}
+    pinFails++;if(pinFails>=3){pinFails=0;lockUntil=Date.now()+30000;return {ok:false,locked:true}}
+    return {ok:false,left:3-pinFails};
+  });
+}
+function ask(o){
+  return new Promise(function(res){
+    var d=$('#dlg'),f=$('#dlgForm'),inp=$('#dlgPin'),err=$('#dlgErr'),okb=$('#dlgOk');
+    $('#dlgT').textContent=o.title;$('#dlgB').textContent=o.body||'';
+    $('#dlgPinRow').hidden=!o.pin;inp.value='';err.textContent='';
+    okb.textContent=o.ok||'Confirm';okb.className='btn'+(o.danger?' danger':'');
+    var done=function(v){f.onsubmit=null;$('#dlgNo').onclick=null;closeOv(d);res(v)};
+    $('#dlgNo').onclick=function(){done(false)};
+    f.onsubmit=function(e){
+      e.preventDefault();
+      if(!o.pin){done(true);return}
+      if(!/^[0-9]{4}$/.test(inp.value)){err.textContent='Enter your 4 digit PIN.';return}
+      verifyPin(inp.value).then(function(r){
+        if(r.ok){done(true)}
+        else if(r.locked){var s=Math.ceil((lockUntil-Date.now())/1000);err.textContent='Too many wrong tries. Wait '+s+' seconds.';inp.value=''}
+        else{err.textContent='Wrong PIN. '+r.left+' '+(r.left===1?'try':'tries')+' left.';inp.value='';inp.focus()}
+      });
+    };
+    openOv(d);setTimeout(function(){(o.pin?inp:$('#dlgNo')).focus()},30);
+  });
+}
+var gate=function(o){o.pin=hasPin();return ask(o)};
+
+/* ---------- focus engine ---------- */
+var tickT=null,lastTreeKey='';
+function activeRules(){return state.settings.rules.filter(function(r){return r.on})}
+function startSession(){
+  if(state.active)return;
+  if(nightActive()&&!nightPreview){toast('Night Mode is on. Rest now and study in the morning.');showNight(false);return}
+  if(state.sample){clearSample(true)}
+  var m=state.settings.duration,now=Date.now(),n=activeRules().length;
+  state.active={start:now,end:now+m*60000,minutes:m,wilted:false,breakUntil:0,breakMs:0,leftAt:0};
+  log('FOCUS START '+m+'m, '+n+' app rule'+(n===1?'':'s')+' active','ok');
+  $('#qline').textContent=pick(QUOTES.start);
+  save();renderAll();startTick();
+}
+function startTick(){clearInterval(tickT);tickT=setInterval(tick,250);tick()}
+function tick(){
+  var a=state.active;if(!a){clearInterval(tickT);return}
+  var now=Date.now();
+  if(a.breakUntil&&now>=a.breakUntil){a.breakUntil=0;save();log('BREAK OVER, rules active again','ok');toast('Break over. Back to it.');renderConsole()}
+  if(now>=a.end){finish('done');return}
+  renderTimer();
+}
+function finish(mode){
+  var a=state.active;if(!a)return;
+  var now=Date.now();
+  var studied=mode==='done'?a.minutes:Math.max(0,Math.min(a.minutes,Math.round((Math.min(now,a.end)-a.start-a.breakMs)/60000)));
+  var status=(mode==='done'&&!a.wilted)?'grown':'wilted';
+  state.sessions.push({id:'s'+now,ts:now,minutes:a.minutes,done:studied,status:status});
+  state.active=null;clearInterval(tickT);lastTreeKey='';
+  if(status==='grown'){log('FOCUS COMPLETE '+a.minutes+'m, tree grown','ok');toast(pick(QUOTES.done))}
+  else if(mode==='away'){log('SESSION ENDED while you were away, tree wilted','bad');toast('The session ended while the page was closed, so the tree wilted.')}
+  else if(mode==='early'){log('SESSION ENDED early, tree wilted','bad');toast('Session ended early. The tree wilted. Plant a new one when you are ready.')}
+  else{log('FOCUS COMPLETE '+a.minutes+'m, but you took a break, tree wilted','bad');toast('Session finished. The tree wilted because you used a break.')}
+  document.title='MindShield';
+  save();renderAll();
+}
+
+/* ---------- popup ---------- */
+var pctx=null,cdT=null;
+function openPopup(app,kind,awayMs){
+  var a=state.active,now=Date.now();
+  if(a&&a.breakUntil>now)return;
+  if(!$('#popup').hidden)return;
+  var demo=!a;
+  pctx={app:app,kind:kind,demo:demo,rec:null};
+  if(!demo){pctx.rec={ts:now,app:kind==='tab'?'Left the study tab':app,outcome:'pending'};state.attempts.push(pctx.rec);log('BLOCKED '+(kind==='tab'?'tab switch':app)+', showing pause screen','bad')}
+  $('#pTag').textContent=demo?'Preview. Shows when Focus Mode is on':'Focus mode is on';
+  $('#pWho').textContent=kind==='tab'?'You were away from this tab for '+mmss(awayMs||0)+'.':'You tried to open '+app+'.';
+  $('#pQuote').textContent=pick(QUOTES.popup);
+  $('#pReason').hidden=true;$('#pWhy').value='';$('#pAllow').disabled=true;
+  var ov=$('#pOver');ov.disabled=true;ov.textContent='I really need this (wait 10s)';
+  var rem=10;$('#pCount').textContent=rem;$('#pBreath').textContent='Breathe in';
+  clearInterval(cdT);
+  cdT=setInterval(function(){
+    rem--;$('#pCount').textContent=Math.max(0,rem);
+    $('#pBreath').textContent=((10-rem)%8)<4?'Breathe in':'Breathe out';
+    if(rem<=0){clearInterval(cdT);ov.disabled=false;ov.textContent='I really need this';$('#pBreath').textContent='Take your time'}
+    else ov.textContent='I really need this (wait '+rem+'s)';
+  },1000);
+  openOv($('#popup'));setTimeout(function(){$('#pBack').focus()},30);
+}
+function closePopup(){clearInterval(cdT);closeOv($('#popup'))}
+function popupBack(){
+  var c=pctx;closePopup();pctx=null;if(!c)return;
+  if(c.rec){c.rec.outcome='back';log('BACK TO STUDY, tree stays healthy','ok');save();renderGarden();renderAudit()}
+  toast(c.demo?'That is the popup students see. Press Start to try it for real.':'Good choice. Your tree is safe.');
+}
+function popupAllow(){
+  var c=pctx,why=$('#pWhy').value.trim();if(!c||why.length<3)return;
+  closePopup();pctx=null;
+  if(c.demo){toast('Preview only. During a real session this would start a 5 minute break.');return}
+  var a=state.active,now=Date.now();if(!a)return;
+  c.rec.outcome='override';c.rec.reason=why.slice(0,120);
+  a.wilted=true;a.breakUntil=now+300000;a.end+=300000;a.breakMs+=300000;
+  log('OVERRIDE 5 minutes ('+why.slice(0,40)+'), tree wilting','bad');
+  toast('5 minute break started. Your tree is wilting.');
+  save();renderAll();
+}
+function onAway(){var a=state.active;if(!a)return;if(document.hidden){a.leftAt=Date.now()}else if(a.leftAt){var ms=Date.now()-a.leftAt;a.leftAt=0;if(ms>=1500&&a.breakUntil<=Date.now())openPopup('another tab or app','tab',ms)}}
+document.addEventListener('visibilitychange',onAway);
+
+/* ---------- night mode ---------- */
+var nightPreview=false;
+function nightActive(){
+  if(!state.settings.night)return false;
+  var p=(state.settings.bedtime||'23:00').split(':'),b=(+p[0])*60+(+p[1]||0),d=new Date(),n=d.getHours()*60+d.getMinutes(),end=300;
+  return b<end?(n>=b&&n<end):(n>=b||n<end);
+}
+function showNight(preview){
+  nightPreview=!!preview;
+  var el=$('#nov');
+  $('#nQuote').textContent=pick(QUOTES.night);
+  $('#nSub').textContent=preview?'This is a preview. At bedtime this screen stays until 5:00 in the morning.':'Focus sessions are paused until 5:00. Your garden will be here tomorrow.';
+  $('#nSnooze').hidden=!!preview;$('#nClose').hidden=!preview;
+  nightClock();openOv(el);setTimeout(function(){(preview?$('#nClose'):$('#nSnooze')).focus()},30);
+}
+function nightClock(){var d=new Date();$('#nClock').textContent=pad(d.getHours())+':'+pad(d.getMinutes())}
+function nightTick(){
+  var el=$('#nov');
+  if(!el.hidden){nightClock();if(!nightPreview&&!nightActive()){closeOv(el);log('NIGHT MODE ended','ok')}}
+  else if(nightActive()&&Date.now()>=state.snoozeUntil){log('NIGHT MODE on, apps locked until 05:00','bad');showNight(false)}
+  renderNightStatus();
+}
+$('#nSnooze').addEventListener('click',function(){
+  gate({title:'Snooze Night Mode?',body:'You get 15 more minutes. Sleep is part of studying.',ok:'Snooze 15 minutes'}).then(function(ok){if(!ok)return;state.snoozeUntil=Date.now()+900000;save();closeOv($('#nov'));log('NIGHT MODE snoozed 15m')});
+});
+$('#nClose').addEventListener('click',function(){closeOv($('#nov'));nightPreview=false});
+$('#nightPreview').addEventListener('click',function(){showNight(true)});
+$('#nightOn').addEventListener('change',function(e){
+  var want=e.target.checked;
+  if(want){state.settings.night=true;save();renderNightStatus();toast('Night Mode is on.');return}
+  e.target.checked=true;
+  gate({title:'Turn off Night Mode?',body:'Late nights hurt memory and mood.',ok:'Turn off',danger:true}).then(function(ok){if(!ok)return;state.settings.night=false;$('#nightOn').checked=false;save();renderNightStatus();log('NIGHT MODE turned off')});
+});
+$('#bedtime').addEventListener('change',function(e){
+  var v=e.target.value||'23:00',old=state.settings.bedtime;
+  if(v===old)return;
+  e.target.value=old;
+  gate({title:'Change bedtime to '+v+'?',body:'Changing it is a tamper-protected action.',ok:'Change'}).then(function(ok){if(!ok)return;state.settings.bedtime=v;$('#bedtime').value=v;save();renderNightStatus();log('BEDTIME set to '+v)});
+});
+
+/* ---------- render ---------- */
+function renderLog(){
+  var el=$('#log');if(!el)return;
+  var items=state.log.slice(-7);
+  if(!items.length){
+    var names=activeRules().map(function(r){return r.name}).join(', ')||'none';
+    el.innerHTML='<li><span class="t">[--:--:--]</span> firewall idle</li><li><span class="t">[--:--:--]</span> rules ready: '+esc(names)+'</li><li><span class="t">[--:--:--]</span> waiting for a focus session</li>';
+    return;
+  }
+  el.innerHTML=items.map(function(l){return '<li><span class="t">['+hms(l.ts)+']</span> <span class="'+esc(l.cls)+'">'+esc(l.msg)+'</span></li>'}).join('');
+}
+function renderRules(){
+  var a=!!state.active;
+  $('#rules').innerHTML=state.settings.rules.map(function(r,i){
+    return '<div class="rule'+(r.custom?' custom':'')+'"><input class="sw" type="checkbox" id="r_'+i+'" data-i="'+i+'"'+(r.on?' checked':'')+(a?' disabled':'')+'><label for="r_'+i+'">'+esc(r.name)+'</label><button type="button" class="btn ghost sm" data-try="'+i+'">Try opening</button>'+(r.custom?'<button type="button" class="x" data-del="'+i+'" aria-label="Remove '+esc(r.name)+'"'+(a?' disabled':'')+'>&times;</button>':'')+'</div>';
+  }).join('');
+  $('#ruleCount').textContent=activeRules().length+' of '+state.settings.rules.length+' active';
+  $('#lockNote').hidden=!a;
+  $('#newRule').disabled=a;$('#addRule button').disabled=a;
+}
+function renderConsole(){
+  var a=state.active,now=Date.now();
+  var pill=$('#pill');
+  pill.textContent=!a?'Idle':(a.breakUntil>now?'On break':'Focusing');
+  pill.dataset.s=!a?'idle':(a.breakUntil>now?'break':'on');
+  $('#startBtn').hidden=!!a;$('#endBtn').hidden=!a;
+  $$('#durs .chip').forEach(function(b){b.setAttribute('aria-pressed',String(+b.dataset.m===state.settings.duration));b.disabled=!!a});
+  renderRules();renderTimer();
+}
+function renderTimer(){
+  var a=state.active,now=Date.now(),total,rem,p,txt;
+  if(!a){total=state.settings.duration*60000;rem=total;p=0;$('#timeSub').textContent='ready'}
+  else{
+    total=a.minutes*60000;rem=a.end-Math.max(now,a.breakUntil);p=1-rem/total;
+    $('#timeSub').textContent=a.breakUntil>now?'break '+mmss(a.breakUntil-now):(a.wilted?'tree wilting':'tree growing');
+  }
+  p=Math.max(0,Math.min(1,p));
+  txt=mmss(rem);$('#time').textContent=txt;
+  $('#prg').style.strokeDashoffset=String(553*(1-p));
+  if(a)document.title=txt+' MindShield';
+  var wilted=a?a.wilted:false,pp=a?Math.max(0.04,p):0.04,key=Math.round(pp*50)+'|'+wilted+'|'+!!a;
+  if(key!==lastTreeKey){lastTreeKey=key;$('#liveTree').innerHTML=treeSVG(pp,wilted,false,a?'Your tree is growing':'A seed waiting for a session')}
+}
+function renderGarden(){
+  var li=levelIdx(),L=LEVELS[li],N=LEVELS[li+1],g=grownCount();
+  $('#bigTree').innerHTML='<div class="big-tree">'+treeSVG(L.p,false,li===3,'Your tree: '+L.n)+'</div>';
+  $('#lvlName').textContent=L.n;
+  $('#lvlNext').textContent=N?(N.min-g)+' more tree'+(N.min-g===1?'':'s')+' to reach '+N.n:'Top level reached. Keep the forest alive.';
+  $('#lvlBar').style.width=(N?Math.round((g-L.min)/(N.min-L.min)*100):100)+'%';
+  var mins=state.sessions.reduce(function(t,s){return t+(s.done||0)},0);
+  $('#stats').innerHTML='<li><b>'+streak()+'</b>day streak</li><li><b>'+g+'</b>trees grown</li><li><b>'+mins+'</b>focus minutes</li>';
+  $('#ladder').innerHTML=LEVELS.map(function(l,i){return '<li'+(i===li?' aria-current="step"':'')+'>'+treeSVG(l.p,false,i===3,l.n)+l.n+'<small>'+(l.min?l.min+'+ trees':'start')+'</small></li>'}).join('');
+  var list=state.sessions.slice().sort(function(a,b){return b.ts-a.ts}).slice(0,24);
+  $('#plots').innerHTML=list.map(function(s){var d=new Date(s.ts);return '<li title="'+esc(s.minutes)+' min, '+(s.status==='grown'?'grown':'wilted')+', '+esc(d.toLocaleDateString())+'">'+treeSVG(0.8,s.status!=='grown',false,s.minutes+' minute session, '+s.status)+'</li>'}).join('');
+  $('#plotsSub').textContent=list.length?'Green trees finished. Brown trees wilted.':'No trees yet. Finish a session to plant the first one.';
+  $('#sampleNote').hidden=!state.sample;
+  renderChart();
+}
+function renderChart(){
+  var days=[],i;
+  for(i=6;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);days.push({k:dk(d),l:d.toLocaleDateString(undefined,{weekday:'short'}),v:0,today:i===0,ts:d.getTime()})}
+  state.sessions.forEach(function(s){var k=dk(new Date(s.ts));days.forEach(function(d){if(d.k===k)d.v+=s.done||0})});
+  var max=Math.max(60,Math.max.apply(null,days.map(function(d){return d.v})));
+  $('#chart').innerHTML='<div class="bars">'+days.map(function(d){return '<div class="col'+(d.today?' today':'')+'"><span class="v">'+d.v+'</span><div class="b" style="height:'+Math.round(d.v/max*100)+'px"></div></div>'}).join('')+'</div><div class="days">'+days.map(function(d){return '<span>'+esc(d.l)+'</span>'}).join('')+'</div>';
+  var cut=Date.now()-7*DAY,back=0,over=0;
+  state.attempts.forEach(function(a){if(a.ts>=cut){if(a.outcome==='back')back++;else if(a.outcome==='override')over++}});
+  $('#chart').insertAdjacentHTML('beforeend','<p class="chart-sum">Distraction attempts this week: '+(back+over)+'. You chose Back to study '+back+' time'+(back===1?'':'s')+'.</p>');
+}
+function renderNightStatus(){
+  $('#nightOn').checked=!!state.settings.night;$('#bedtime').value=state.settings.bedtime;
+  var s=!state.settings.night?'Night Mode is off.':('Night Mode is on. Apps lock from '+state.settings.bedtime+' to 05:00. Right now: '+(nightActive()?'rest time.':'awake time.'));
+  $('#nightStatus').textContent=s;
+}
+function renderAudit(){
+  var raw=JSON.stringify(state,null,2),bytes=new Blob([raw]).size;
+  var rows=[['Study sessions',state.sessions.length],['Distraction attempts',state.attempts.length],['Blocked app rules',state.settings.rules.length],['Event log lines',state.log.length],['PIN',hasPin()?'salted SHA-256 hash only':'not set'],['Stored size',(bytes/1024).toFixed(1)+' KB'],['Sent to any server','nothing'],['Browser storage',storageOK?'working':'blocked, progress will not be saved']];
+  $('#audit').innerHTML=rows.map(function(r){return '<li><span>'+esc(r[0])+'</span><span>'+esc(r[1])+'</span></li>'}).join('');
+  $('#raw').textContent=raw;
+  $('#pinState').textContent=hasPin()?'A PIN is set. It is stored as a salted hash, never as the digits.':'No PIN yet. Set one so a weak moment cannot end your session.';
+  $('#pinForm').hidden=hasPin();$('#pinRemoveWrap').hidden=!hasPin();
+}
+function renderAll(){renderConsole();renderGarden();renderNightStatus();renderAudit();renderLog()}
+
+function clearSample(silent){
+  state.sample=false;
+  state.sessions=state.sessions.filter(function(s){return !s.sample});
+  state.attempts=state.attempts.filter(function(a){return !a.sample});
+  save();if(!silent){renderAll();toast('Examples cleared.')}
+}
+
+/* ---------- events ---------- */
+$('#durs').addEventListener('click',function(e){var b=e.target.closest('.chip');if(!b||state.active)return;state.settings.duration=+b.dataset.m;save();renderConsole()});
+$('#startBtn').addEventListener('click',startSession);
+$('#endBtn').addEventListener('click',function(){
+  gate({title:'End this session?',body:'Your tree will wilt. Finish it to see it grow.',ok:'End session',danger:true}).then(function(ok){if(ok&&state.active)finish('early')});
+});
+$('#rules').addEventListener('change',function(e){
+  var i=e.target.getAttribute('data-i');if(i===null||state.active)return;
+  state.settings.rules[+i].on=e.target.checked;save();renderConsole();renderLog();
+});
+$('#rules').addEventListener('click',function(e){
+  var t=e.target.closest('[data-try]'),d=e.target.closest('[data-del]');
+  if(t){
+    var r=state.settings.rules[+t.getAttribute('data-try')];
+    if(state.active&&!r.on){toast(r.name+' is switched off, so it would open normally.');return}
+    openPopup(r.name,'rule');
+  }
+  if(d&&!state.active){state.settings.rules.splice(+d.getAttribute('data-del'),1);save();renderConsole();renderLog()}
+});
+$('#addRule').addEventListener('submit',function(e){
+  e.preventDefault();if(state.active)return;
+  var inp=$('#newRule'),name=inp.value.trim().slice(0,20);if(!name)return;
+  if(state.settings.rules.length>=12){toast('That is the maximum of 12 apps.');return}
+  if(state.settings.rules.some(function(r){return r.name.toLowerCase()===name.toLowerCase()})){toast(name+' is already on the list.');return}
+  state.settings.rules.push({id:'c'+Date.now(),name:name,on:true,custom:true});inp.value='';save();renderConsole();renderLog();
+});
+$('#pBack').addEventListener('click',popupBack);
+$('#pOver').addEventListener('click',function(){$('#pReason').hidden=false;$('#pWhy').focus()});
+$('#pWhy').addEventListener('input',function(){$('#pAllow').disabled=$('#pWhy').value.trim().length<3});
+$('#pAllow').addEventListener('click',popupAllow);
+$('#clearSample').addEventListener('click',function(){clearSample(false)});
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Escape')return;
+  if(!$('#dlg').hidden){$('#dlgNo').click()}
+  else if(!$('#popup').hidden){popupBack()}
+  else if(!$('#nov').hidden&&nightPreview){$('#nClose').click()}
+});
+
+/* quotes */
+var qKey='start',qLast='';
+function renderQuotes(){
+  $('#qTabs').innerHTML=QTABS.map(function(t){return '<button type="button" class="chip" data-q="'+t[0]+'" aria-pressed="'+(t[0]===qKey)+'">'+esc(t[1])+'</button>'}).join('');
+  qLast=pick(QUOTES[qKey],qLast);$('#qText').textContent=qLast;
+}
+$('#qTabs').addEventListener('click',function(e){var b=e.target.closest('[data-q]');if(!b)return;qKey=b.getAttribute('data-q');qLast='';renderQuotes()});
+$('#qNext').addEventListener('click',function(){qLast=pick(QUOTES[qKey],qLast);$('#qText').textContent=qLast});
+
+/* PIN setup + data tools */
+$('#pinForm').addEventListener('submit',function(e){
+  e.preventDefault();var v=$('#pinNew').value,err=$('#pinErr');
+  if(!/^[0-9]{4}$/.test(v)){err.textContent='Use exactly 4 digits.';return}
+  var salt=rnd();
+  hashPin(v,salt).then(function(h){state.settings.pin={salt:salt,hash:h};$('#pinNew').value='';err.textContent='';save();renderAudit();log('PIN set, tamper protection on','ok');toast('PIN set. Remember it.')});
+});
+$('#pinRemove').addEventListener('click',function(){
+  ask({title:'Remove your PIN?',body:'Enter your PIN to remove tamper protection.',pin:true,ok:'Remove PIN',danger:true}).then(function(ok){if(!ok)return;state.settings.pin=null;save();renderAudit();log('PIN removed');toast('PIN removed.')});
+});
+$('#eraseBtn').addEventListener('click',function(){
+  gate({title:'Erase all MindShield data?',body:'This deletes your trees, streaks, settings and PIN from this browser. It cannot be undone.',ok:'Erase everything',danger:true}).then(function(ok){
+    if(!ok)return;
+    clearInterval(tickT);try{localStorage.removeItem(KEY)}catch(e){}
+    state=fresh(false);document.title='MindShield';lastTreeKey='';save();renderAll();toast('Everything was erased.');
+  });
+});
+
+/* boot */
+renderQuotes();
+$('#qline').textContent=pick(QUOTES.start);
+renderAll();
+if(state.active){
+  if(Date.now()>=state.active.end){finish('away')}
+  else{state.active.leftAt=0;log('SESSION resumed after reload','ok');startTick()}
+}
+setInterval(nightTick,15000);
+setTimeout(nightTick,800);
+})();
+</script>
+</body>
+</html>
